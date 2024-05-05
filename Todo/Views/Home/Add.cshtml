@@ -1,0 +1,32 @@
+﻿@model TodoItem
+
+<div id="app">
+    <h1 class="pt-5 pb-3" v-text="message"></h1>
+
+    <form asp-action="Add" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Task" class="form-label">Todo description</label>
+            <input asp-for="Task" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Add</button>
+        <button asp-action="Index" class="btn btn-danger" style="margin-left: 1%;">Back</button>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            data() {
+                return {
+                    message: 'New Todo Item'
+                }
+            }
+        }).mount('#app')
+    </script>
+}

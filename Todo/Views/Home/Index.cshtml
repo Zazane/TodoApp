@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TodoItem>
+
+<div id="app">
+    <h1 class="pt-5 pb-3" v-text="message"></h1>
+    <div class="row">
+        <form asp-action="Add" method="post" style="text-align: right;">
+            <a asp-action="Add" class="btn btn-primary">Add a new task</a>
+        </form>
+        <table class="table table-bordered table-striped mt-2">
+            <thread>
+                <tr>
+                    <th>Id</th>
+                    <th>Task description</th>
+                    <th class="w-25"></th>
+                    <th class="w-25"></th>
+                </tr>
+            </thread>
+            <tbody>
+                <div v-if="todos.length > 0">
+                    <tr v-for="todo in todos" :class="{'bg-success text-white': todo.completed }">
+                        <td v-text="todo.id"></td>
+                        <td v-text="todo.task"></td>
+                        <td>
+                            <form asp-action="Complete" method="post" v-if="!todo.completed">
+                                <button type="submit" class="btn btn-success btn-sm" name="Id" :value="todo.id">Complete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm" name="Id" :value="todo.id">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </div>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        const { createApp, ref } = Vue
+
+        createApp({
+            data() {
+                return {
+                    message: 'Todo List',
+                    todos: []
+                }
+            },
+            mounted: function() {
+                let todoList = '@Html.Raw(Json.Serialize(Model))';
+                this.todos = JSON.parse(todoList);
+            }
+        }).mount('#app')
+    </script>
+}
